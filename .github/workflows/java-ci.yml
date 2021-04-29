@@ -14,6 +14,12 @@ jobs:
         with:
           java-version: 1.8
           
+       - name: Build with Maven including only unit testing (with SonarCloud)
+	     env:
+			GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+			SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+		 run: mvn --batch-mode --update-snapshots test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          
       - name: Prepare database for integration tests
         run: | 
           sudo /etc/init.d/mysql start
@@ -31,8 +37,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           
-      - name: Build with Maven including only unit testing (with SonarCloud)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn --batch-mode --update-snapshots test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+     
